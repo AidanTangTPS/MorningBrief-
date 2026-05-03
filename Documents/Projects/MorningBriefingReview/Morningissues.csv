@@ -1,5 +1,0 @@
-title,body,labels,assignees,milestone,state,state_reason
-"Add docstrings to all modules and functions","Add module-level and function-level docstrings following PEP 257 conventions to all Python files. (Note: validation.py docstring is misplaced and get_scores is missing one).","documentation,enhancement",,,open,
-"Add input validation and type hints","Add type hints to all function signatures (e.g. def get_weather() -> dict) and input validation using pydantic or manual checks.","enhancement,type-safety",,,open,
-"Add unit tests","Create a tests/ directory and add pytest-based unit tests for each module.","testing,enhancement",,,open,
-"Add code formatting and linting tools","Set up black, ruff, and mypy with configuration files (pyproject.toml) and add them to CI.","tooling,ci-cd,enhancement",,,open,
