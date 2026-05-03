@@ -28,10 +28,10 @@ def main():
     scores = get_scores()
 
     summaryai = get_summary(news)
-    email_sender(weather, news, deadlines, scores)
+    email_sender(weather, news, deadlines, scores, summaryai)
     
 
-def email_sender(weather, news, deadlines, scores):
+def email_sender(weather, news, deadlines, scores, summaryai):
     resend.api_key = os.environ["RESEND_API_KEY"]
 
     # Professional dark-mode dashboard styling
