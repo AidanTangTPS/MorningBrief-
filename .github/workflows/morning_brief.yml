@@ -29,4 +29,5 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          DATABASE_KEYNOTION: ${{ secrets.DATABASE_KEYNOTION }}
         run: python gmail.py
