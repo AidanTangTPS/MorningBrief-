@@ -1,0 +1,4 @@
+resend
+requests
+openai
+python-dotenv
