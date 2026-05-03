@@ -28,4 +28,5 @@ jobs:
           NOTION_KEY: ${{ secrets.NOTION_KEY }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
         run: python gmail.py
