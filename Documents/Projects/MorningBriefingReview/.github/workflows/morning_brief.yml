@@ -1,0 +1,38 @@
+name: Morning Briefing
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '00 21 * * *' 
+  workflow_dispatch:       
+
+jobs:
+  send-briefing:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run briefing
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWS_KEY: ${{ secrets.NEWS_KEY }}
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          WEATHER_KEY: ${{ secrets.WEATHER_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+        run: python gmail.py
