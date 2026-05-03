@@ -1,25 +1,39 @@
+"""entry point for GMAIL"""
 import os 
 import resend 
+import logging
 from weather import get_weather
 from news import get_news
 from notion import get_notion
 from dotenv import load_dotenv
 from score import get_scores
 from summariser import get_summary
-
+from validation import validate_vars
 load_dotenv()
-resend.api_key = os.environ["RESEND_API_KEY"]
-
+gmail_address = os.getenv("GMAIL_ADDRESS")
 # Data Retrieval
-news = get_news()
-weather = get_weather()
-deadlines = get_notion()
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
-scores = get_scores()
+def main():
+    validate_vars()
 
-summaryai = get_summary(news)
+    news = get_news()
+    weather = get_weather()
+    deadlines = get_notion()
+
+    scores = get_scores()
+
+    summaryai = get_summary(news)
+    email_sender(weather, news, deadlines, scores)
+    
 
 def email_sender(weather, news, deadlines, scores):
+    resend.api_key = os.environ["RESEND_API_KEY"]
+
     # Professional dark-mode dashboard styling
     html_content = f"""
     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #121212; padding: 40px 10px;">
@@ -71,15 +85,15 @@ def email_sender(weather, news, deadlines, scores):
 
     params: resend.Emails.SendParams = {
         "from": "Assistant <onboarding@resend.dev>",
-        "to": ["pengpengjin1@gmail.com"],
+        "to": [f"{gmail_address}"],
         "subject": f"Leo's Daily Briefing",
         "html": html_content,
     }
 
     try:
         email = resend.Emails.send(params)
-        print("Success: Briefing sent to Leo.")
+        logger.info("Success: Briefing sent to Leo.")
     except Exception as e:
-        print(f"Error: {e}")
-
-email_sender(weather, news, deadlines, scores)
+        logger.error(f"Error: {e}")
+if __name__ == "__main__":
+    main()

@@ -1,18 +1,24 @@
+"""Import from notion"""
 import requests
 import os
+import logging
+import config
 from dotenv import load_dotenv
 from datetime import date
 
-load_dotenv()
+logger = logging.getLogger(__name__)
+
 
 def get_notion():
+    """Fetch from notion DB"""
+    load_dotenv()
+
     date_rn = date.today()
     notion = os.getenv("NOTION_KEY")
-    url = "https://api.notion.com/v1/databases/302b52c9881981a1add0e9835db85af1/query"
-    
+    url = f"{config.NOTION_API_URL}/{config.NOTION_DB_ID}/query"    
     headers = {
         "Authorization": f"Bearer {notion}",
-        "Notion-Version": "2022-06-28",
+        "Notion-Version": config.NOTION_VERSION,
         "Content-Type": "application/json"
     }
     
@@ -29,7 +35,7 @@ def get_notion():
         response.raise_for_status()
         data = response.json()
     except requests.exceptions.RequestException as e:
-        print(f"API Connection Error: {e}")
+        logger.error(f"API Connection Error: {e}")
         return []
 
     results = []
